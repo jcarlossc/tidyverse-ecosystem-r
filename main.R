@@ -39,3 +39,24 @@ library(tidyverse)
 
 # ================================================================
 
+# 1. readr (importação/exportação).
+
+# Funções principais:
+# read_csv() - ler CSV.
+# read_tsv() - ler TSV.
+# read_delim() - ler delimitados.
+# write_csv() - salvar CSV.
+# read_rds() e write_rds() - salvar/ler binário.
+
+# Exemplo de leitura de arquivo csv:
+
+# Exemplo de leitura de arquivo csv:
+
+# Endereço do arquivo csv a ser explorado.
+arquivo <- "exemplo.csv"
+
+# Variável que conterá o data frame.
+dados <- read_csv(file=arquivo)
+
+# ================================================================
+
