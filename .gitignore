@@ -1,0 +1,40 @@
+# Arquivos de sessão do R
+.Rhistory
+.RData
+.Ruserdata
+.RDataTmp
+.Rproj.user/
+
+# Arquivos de projeto do RStudio
+.Rproj.user/
+.Rproj.user/*
+
+# Ambiente virtual do renv
+renv/
+renv/staging/
+renv/activate.R
+renv/library/
+
+# Cache do pacote renv
+renv/.cache/
+
+# Arquivos temporários
+*.utf8
+*.knit.md
+*.Rout
+*.o
+*.so
+*.dll
+*.log
+
+# Dados gerados automaticamente
+*.csv
+*.tsv
+*.rds
+*.rdata
+
+# Diretórios comuns de saída
+/data/
+/output/
+/results/
+/figures/
