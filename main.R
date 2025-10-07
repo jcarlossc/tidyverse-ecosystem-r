@@ -60,3 +60,88 @@ dados <- read_csv(file=arquivo)
 
 # ================================================================
 
+# 2. dplyr (manipulação de dados).
+
+# select() - selecionar colunas.
+# filter() - filtrar linhas.
+# arrange() - ordenar.
+# mutate() - criar/transformar colunas.
+# summarise() - resumir valores.
+# group_by() - agrupar para cálculos.
+# distinct() - valores únicos.
+# rename() - renomear colunas.
+# join functions (left_join, inner_join, right_join, full_join).
+
+# Exemplo de manipulação de dados:
+
+# Exemplo com dataset interno
+dados = starwars
+
+# Leitura das primeiras linhas.
+head(dados)
+
+# Visualização dos dados em janela separada.
+View(dados)
+
+# ----------
+
+dados %>% 
+  # filtra apenas as linhas do tipo olhos azuis. 
+  filter(eye_color == "blue") %>%   
+  # Seleciona nome, cor dos olhos, peso e altura.
+  select(name, eye_color, mass, height) %>%
+  # Ordenação descendente dos nomes.
+  arrange(desc(name)) %>%
+  # Cria uma coluna altura_peso para o imc.
+  mutate(altura_peso = mass / ((height / 100) ** 2 )) %>%
+  # Renomeia a coluna altura_peso para imc.
+  rename(imc = altura_peso)
+  # Valores únicos.
+
+# ----------
+
+dados %>%
+  # Busca o valor mais frequente.
+  summarise(moda = names(which.max(table(sex))))
+
+# ----------
+
+dados %>%
+  # Valores distintos.
+  distinct(sex)
+
+# ----------
+
+# Em R, join functions (left_join, inner_join, right_join, full_join)
+# ------------------------------------------------------------------------  
+# Função	     | Tipo de junção	  | Mantém linhas de...
+# -------------|------------------|---------------------------------------
+# inner_join() | Interseção	      | Apenas registros que estão em ambos os data frames.
+# left_join()	 | Junção à esquerda|	Todos os registros do data frame da esquerda.
+# right_join() | Junção à direita	| Todos os registros do data frame da direita.
+# full_join()	 | Junção completa	| Todos os registros de ambos os data frames.
+# ------------------------------------------------------------------------
+
+# Data frames criados para exemplificar as joins functions.
+
+# Data frame 1: alunos e suas notas
+alunos <- tibble(
+  id = c(1, 2, 3, 4),
+  nome = c("Ana", "Bruno", "Carlos", "Diana"),
+  nota = c(8.5, 7.2, 9.1, 6.8)
+)
+
+# Data frame 2: alunos e suas turmas
+turmas <- tibble(
+  id = c(2, 3, 4, 5),
+  turma = c("A", "B", "A", "C")
+)
+
+inner_join(alunos, turmas, by = "id")
+left_join(alunos, turmas, by = "id")
+right_join(alunos, turmas, by = "id")
+full_join(alunos, turmas, by = "id")
+
+# ================================================================
+
+
