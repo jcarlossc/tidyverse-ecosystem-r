@@ -214,10 +214,58 @@ dados_substituidos
 
 # ================================================================
 
+# 4. purrr (programação funcional)
+
+# map() - aplica função sobre listas/vetores
+# map_dbl(), map_chr() - retorna vetores tipados
+# map_df() - retorna data frame
+# pmap() - aplica função com múltiplos argumentos
 
 
+# Aplica a função que muda a grandeza da altura: cm para m.
+dados_resultado <- map(dados$height, function(x) x / 100)
 
+dados_resultado
 
+# ----------
+
+# Retorna um vetor numérico do peso ao quadrado.
+resultado_vetor <- map_dbl(dados$mass, function(x) x ** 2)
+
+resultado_vetor
+
+# ----------
+
+# Retorn um vetor de caracteres.
+dados_caracteres <- map_chr(dados$name, function(x) paste("Personagem:", x))
+
+dados_caracteres
+
+# ----------
+
+# Retorna um data frame com peso, peso_quadrado e peso_cubo.
+
+dados_df <- map_df(dados$mass, function(x) {
+  tibble(
+    peso = x,
+    peso_quadrado = x ** 2,
+    peso_cubo = x ** 3
+  )
+})
+
+dados_df
+
+# ----------
+
+# Mapeia múltiplas colunas (argumentos paralelos)
+dados_escolhidos <- dados %>%
+  select(height, mass)
+
+dados_soma <- pmap_dbl(dados_escolhidos, function(height, mass) height * mass)
+
+head(dados_soma)
+
+# ================================================================
 
 
 
