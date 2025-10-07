@@ -50,13 +50,11 @@ library(tidyverse)
 
 # Exemplo de leitura de arquivo csv:
 
-# Exemplo de leitura de arquivo csv:
-
-# Endereço do arquivo csv a ser explorado.
+# Variável do arquivo csv a ser explorado.
 arquivo <- "exemplo.csv"
 
 # Variável que conterá o data frame.
-dados <- read_csv(file=arquivo)
+dados <- read_csv(file = arquivo)
 
 # ================================================================
 
@@ -143,5 +141,83 @@ right_join(alunos, turmas, by = "id")
 full_join(alunos, turmas, by = "id")
 
 # ================================================================
+
+# 3. tidyr (organização dos dados)
+
+# pivot_longer() - transformar colunas em linhas.
+# pivot_wider() - transformar linhas em colunas.
+# separate() - separar colunas.
+# unite() - unir colunas.
+# drop_na() - remover NAs.
+# replace_na() - substituir NAs.
+
+# Exemplo de organização de dados:
+
+# Serve para “derreter” colunas e deixá-las empilhadas.
+# Transforma colunas em linhas.
+# Transformar as colunas height, mass e birth_year em duas colunas:
+# atributo e valor.
+
+dados_longos <- dados %>%
+  select(name, height, mass, birth_year) %>%  # seleciona colunas relevantes
+  pivot_longer(
+    cols = c(height, mass, birth_year),       # colunas que serão transformadas
+    names_to = "atributo",                    # nome da nova coluna com os nomes originais
+    values_to = "valor"                       # nome da nova coluna com os valores
+  )
+
+head(dados_longos)
+
+# ----------
+
+# Fazer o caminho inverso, transformando as linhas (atributos) 
+# de volta em colunas.
+dados_grandes <- dados_longos %>%
+  pivot_wider(
+    names_from = atributo,   
+    values_from = valor      
+  )
+
+head(dados_grandes)
+
+# ----------
+
+# Separa uma coluna em duas.
+dados_separados <- dados %>%
+  separate(name, into = c("primeiro_nome", "segundo_nome"), sep = " ")
+
+dados_separados
+
+# ----------
+
+# Unir duas colunas.
+dados_unidos <- separados %>%
+  unite(col = "name", primeiro_nome, segundo_nome, sep = " ")
+
+dados_unidos
+
+# ----------
+
+# Remover linhas com valores ausentes.
+dados_apagar_na <- dados %>%
+  drop_na()
+
+dados_apagar_na
+
+# ----------
+
+# Substitui valores ausentes de colunas específicas.
+dados_substituidos <- dados %>%
+  replace_na(list(hair_color = "Desconhecido"))
+
+dados_substituidos
+
+# ================================================================
+
+
+
+
+
+
 
 
