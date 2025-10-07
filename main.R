@@ -267,5 +267,50 @@ head(dados_soma)
 
 # ================================================================
 
+# 5. tibble (data frames modernos)
+
+# tibble() - cria tibble
+# as_tibble() - converte para tibble
+# glimpse() - visualização compacta dos dados
+
+# Exemplo de criação de data frame:
+
+# Criação de um tibble manualmente.
+
+dados_tibble <- tibble(
+  nome = c("Ana", "Bruno", "Carlos", "Teresa"),
+  idade = c(23, 35, 48, 3),
+  cidade = c("Recife", "São Paulo", "Recife", "Recife")
+)
+
+# Exibe o tibble
+print(dados_tibble)
+
+# ----------
+
+# Criação de um data frame base
+df_base <- data.frame(
+  nome = c("Carlos", "Teresa"),
+  idade = c(48, 3)
+)
+
+# Conversão para tibble
+tb_convertido <- as_tibble(df_base)
+
+# Exibição
+print(tb_convertido)
+
+# ----------
+
+# A função glimpse() mostra uma visão resumida horizontal dos dados — 
+# ideal para explorar rapidamente colunas e tipos.
+
+glimpse(dados)
+
+# ================================================================
+
+
+
+
 
 
