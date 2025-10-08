@@ -309,8 +309,62 @@ glimpse(dados)
 
 # ================================================================
 
+# 6. stringr (manipulação de strings)
 
+# str_detect() - detectar padrão
+# str_replace() - substituir padrão
+# str_to_upper(), str_to_lower(), str_to_title() - maiúsculas/minúsculas
+# str_length() - tamanho da string
+# str_c() - concatenar
 
+# Exemplo de criação de data frame:
+
+# Verificar se o nome contém "Skywalker", caso positivo, retorna mensagem.
+string_detect <- dados %>%
+  mutate(
+    contem_Skywalker = str_detect(name, "Skywalker"),
+    mensagem = if_else(contem_Skywalker, "Tem Skywalker!", "Não tem Skywalker")
+  )
+
+glimpse(string_detect)
+
+# ----------
+
+# Substituir "Luke" por "Luque".
+string_replace <- dados %>%
+  mutate(nome_corrigido = str_replace(name, "Luke", "Luque"))
+
+glimpse(string_replace)
+
+# ----------
+
+# Alterar maiúsculas, minúsculas e primeira letra dos nomes.
+string_upper_lower_title <- dados %>%
+  mutate(
+    nome_maiusculo = str_to_upper(name),
+    nome_minusculo = str_to_lower(name),
+    nome_titulo    = str_to_title(name)
+  )
+
+glimpse(string_upper_lower_title)
+
+# ----------
+
+# Retorma o tamanho da string.
+string_tamanho <- dados %>%
+  mutate(tamanho_nome = str_length(name))
+
+glimpse(string_tamanho)
+
+# ----------
+
+# Concatenar strings.
+string_concatenar <- dados %>%
+  mutate(nome_especie = str_c(name, " - ", species))
+
+glimpse(string_concatenar)
+
+# ================================================================
 
 
 
