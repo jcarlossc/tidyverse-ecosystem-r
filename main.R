@@ -458,5 +458,112 @@ table(animais_lumped)
 
 # ================================================================
 
+# 8. ggplot2 (visualização)
+
+# ggplot() - inicializa gráfico
+# geom_point() - gráfico de dispersão
+# geom_line() - linha
+# geom_col() / geom_bar() - barras
+# geom_histogram() - histograma
+# geom_boxplot() - boxplot
+# facet_wrap() / facet_grid() - dividir gráfico em painéis
+# labs() - títulos e eixos
+# theme_minimal(), theme_classic() - temas
+
+# Exemplo de visualizações.
+
+library(ggplot2)
+
+# geom_point() — gráfico de dispersão.
+# Base: altura cm vs peso kg.
+# geom_point() adiciona os pontos (scatter plot).
+# color define a cor dos pontos.
+# size define o tamanho.
+ggplot(dados, aes(x = height, y = mass)) +
+  geom_point(color = "steelblue", size = 3)
+
+# ----------
+
+# geom_line() — gráfico de linha
+# geom_line() liga os pontos por uma linha.
+# Requer uma variável contínua no eixo x.
+# Ideal para séries temporais ou tendências.
+ggplot(dados, aes(x = mass, y = sex)) +
+  geom_line(color = "darkorange", linewidth = 1)
+
+# ----------
+
+# geom_col() / geom_bar() — gráfico de barras.
+# geom_col() → usa valores já fornecidos em y.
+ggplot(dados, aes(x = as.factor(mass), y = height)) +
+  geom_col(fill = "seagreen")
+
+# ----------
+
+# geom_col() / geom_bar() — gráfico de barras.
+# geom_bar() → conta automaticamente as ocorrências (não precisa de height).
+ggplot(dados, aes(x = as.factor(mass))) +
+  geom_bar(fill = "purple")
+
+# ----------
+
+# geom_histogram() — histograma.
+# Agrupa valores numéricos em intervalos (bins).
+# binwidth → tamanho das classes.
+# Mostra distribuição de frequência.
+ggplot(dados, aes(x = height)) +
+  geom_histogram(binwidth = 3, fill = "skyblue", color = "black")
+
+# ----------
+
+# geom_boxplot() — boxplot
+# Mostra mediana, quartis e outliers.
+# Ideal para comparar distribuições entre grupos.
+ggplot(dados, aes(x = as.factor(gender), y = height)) +
+  geom_boxplot(fill = "gold")
+
+# ----------
+
+# facet_wrap() / facet_grid().
+# facet_wrap: divide por uma variável.
+ggplot(dados, aes(x = mass, y = gender)) +
+  geom_point(color = "tomato") +
+  facet_wrap(~mass)
+
+# ----------
+
+# labs() — títulos, legendas e eixos.
+ggplot(dados, aes(x = mass, y = height)) +
+  geom_point() +
+  labs(
+    title = "Relação entre peso e altura",
+    subtitle = "Base de dados starswars",
+    x = "peso (kg)",
+    y = "Altura (cm)",
+    caption = "Fonte: dataset starswars"
+  )
+
+# ----------
+
+# theme_minimal() — aparência.
+# theme_gray() (padrão)
+# theme_light()
+# theme_dark()
+# theme_bw()
+ggplot(dados, aes(x = mass, y = height)) +
+  geom_point(color = "darkgreen") +
+  theme_minimal()
+
+# ----------
+
+# theme_classic() — aparência.
+# theme_gray() (padrão)
+# theme_light()
+# theme_dark()
+# theme_bw()
+ggplot(dados, aes(x = height, y = mass)) +
+  geom_point(color = "darkred") +
+  theme_classic()
+
 
 
