@@ -101,10 +101,9 @@ Essa padronização torna os dados mais fáceis de manipular, analisar e visuali
 - fct_infreq() - ordenar por frequência
 - fct_recode() - renomear níveis
 - fct_lump() - agrupar categorias raras em "outros"
-- 8. ggplot2 (visualização)
 
-### 📌 8. ggplot() - inicializa gráfico
-
+### 📌 8. ggplot2 (visualização) 
+- ggplot() - inicializa gráfico
 - geom_point() - gráfico de dispersão
 - geom_line() - linha
 - geom_col() / geom_bar() - barras
@@ -195,3 +194,4 @@ Este projeto está licenciado sob a MIT License.
 📌Twitter/X: https://x.com/jcarlossc1977
 
 ---
+
