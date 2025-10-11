@@ -317,7 +317,7 @@ glimpse(dados)
 # str_length() - tamanho da string
 # str_c() - concatenar
 
-# Exemplo de criação de data frame:
+# Exemplo de manipulação de string:
 
 # Verificar se o nome contém "Skywalker", caso positivo, retorna mensagem.
 string_detect <- dados %>%
@@ -363,6 +363,98 @@ string_concatenar <- dados %>%
   mutate(nome_especie = str_c(name, " - ", species))
 
 glimpse(string_concatenar)
+
+# ================================================================
+
+# 7. forcats (fatores/categorias)
+
+# fct_relevel() - reordenar níveis manualmente
+# fct_infreq() - ordenar por frequência
+# fct_recode() - renomear níveis
+# fct_lump() - agrupar categorias raras em "outros"
+
+# Exemplo de criação de data frame:
+
+# Reordenar níveis manualmente.
+
+library(forcats)
+library(dplyr)
+
+# Reordena manualmente os níveis de um fator, colocando os níveis 
+# em uma posição específica (geralmente no início).
+
+# fct_relevel() é útil quando você quer controlar a ordem dos níveis 
+# para gráficos (ggplot2) ou tabelas, por exemplo, colocando uma 
+# categoria como “padrão” ou “referência”.
+
+# Criando um vetor categórico (fator).
+cores <- factor(c("Azul", "Vermelho", "Verde", "Azul", "Verde", "Amarelo"))
+
+# Visualizando a ordem original dos níveis.
+levels(cores)
+
+# Reordenando os níveis manualmente.
+cores_reordenadas <- fct_relevel(cores, "Vermelho")
+
+levels(cores_reordenadas)
+
+# ----------
+
+# Criando um fator com diferentes frequências.
+frutas <- factor(c(
+  "Maçã", "Banana", "Maçã", "Uva", "Maçã", "Banana", "Uva", "Uva", "Uva")
+  )
+
+# Contando as frequências antes.
+table(frutas)
+
+frutas_ordem_freq <- fct_infreq(frutas)
+
+# Agora os níveis estão ordenados pela frequência, garantindo que as 
+# categorias mais comuns apareçam primeiro.
+
+levels(frutas_ordem_freq)
+
+# ----------
+
+# Renomeia os níveis de um fator — ou seja, altera os rótulos 
+# de categorias específicas.
+
+# Criando fator com nomes confusos.
+status <- factor(c("Aprov", "Reprov", "Aprov", "Em_Analise", "Reprov"))
+
+# Renomeando para nomes mais legíveis.
+status_limpo <- fct_recode(status,
+                           "Aprovado" = "Aprov",
+                           "Reprovado" = "Reprov",
+                           "Em Análise" = "Em_Analise")
+
+# fct_recode() é excelente para padronizar categorias vindas de 
+# bancos de dados onde há abreviações, erros de digitação 
+# ou nomes pouco legíveis.
+
+levels(status_limpo)
+
+# ----------
+
+# Agrupa as categorias menos frequentes em uma 
+#categoria “outros” (por padrão, "Other").
+# Ideal para simplificar gráficos ou análises quando há muitas categorias raras.
+
+# Criando um fator com várias categorias.
+animais <- factor(c("Cachorro", "Gato", "Gato", "Peixe", "Pássaro", 
+                    "Cavalo", "Gato", "Cachorro", "Tartaruga", "Pássaro"))
+
+# Contando frequências antes.
+table(animais)
+
+animais_lumped <- fct_lump(animais, n = 2)
+
+# As categorias menos frequentes foram agrupadas em "Other".
+# Isso é especialmente útil para gráficos de pizza ou barras, 
+# evitando que apareçam dezenas de rótulos pequenos e irrelevantes.
+
+table(animais_lumped)
 
 # ================================================================
 
