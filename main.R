@@ -267,5 +267,303 @@ head(dados_soma)
 
 # ================================================================
 
+# 5. tibble (data frames modernos)
+
+# tibble() - cria tibble
+# as_tibble() - converte para tibble
+# glimpse() - visualização compacta dos dados
+
+# Exemplo de criação de data frame:
+
+# Criação de um tibble manualmente.
+
+dados_tibble <- tibble(
+  nome = c("Ana", "Bruno", "Carlos", "Teresa"),
+  idade = c(23, 35, 48, 3),
+  cidade = c("Recife", "São Paulo", "Recife", "Recife")
+)
+
+# Exibe o tibble
+print(dados_tibble)
+
+# ----------
+
+# Criação de um data frame base
+df_base <- data.frame(
+  nome = c("Carlos", "Teresa"),
+  idade = c(48, 3)
+)
+
+# Conversão para tibble
+tb_convertido <- as_tibble(df_base)
+
+# Exibição
+print(tb_convertido)
+
+# ----------
+
+# A função glimpse() mostra uma visão resumida horizontal dos dados — 
+# ideal para explorar rapidamente colunas e tipos.
+
+glimpse(dados)
+
+# ================================================================
+
+# 6. stringr (manipulação de strings)
+
+# str_detect() - detectar padrão
+# str_replace() - substituir padrão
+# str_to_upper(), str_to_lower(), str_to_title() - maiúsculas/minúsculas
+# str_length() - tamanho da string
+# str_c() - concatenar
+
+# Exemplo de manipulação de string:
+
+# Verificar se o nome contém "Skywalker", caso positivo, retorna mensagem.
+string_detect <- dados %>%
+  mutate(
+    contem_Skywalker = str_detect(name, "Skywalker"),
+    mensagem = if_else(contem_Skywalker, "Tem Skywalker!", "Não tem Skywalker")
+  )
+
+glimpse(string_detect)
+
+# ----------
+
+# Substituir "Luke" por "Luque".
+string_replace <- dados %>%
+  mutate(nome_corrigido = str_replace(name, "Luke", "Luque"))
+
+glimpse(string_replace)
+
+# ----------
+
+# Alterar maiúsculas, minúsculas e primeira letra dos nomes.
+string_upper_lower_title <- dados %>%
+  mutate(
+    nome_maiusculo = str_to_upper(name),
+    nome_minusculo = str_to_lower(name),
+    nome_titulo    = str_to_title(name)
+  )
+
+glimpse(string_upper_lower_title)
+
+# ----------
+
+# Retorma o tamanho da string.
+string_tamanho <- dados %>%
+  mutate(tamanho_nome = str_length(name))
+
+glimpse(string_tamanho)
+
+# ----------
+
+# Concatenar strings.
+string_concatenar <- dados %>%
+  mutate(nome_especie = str_c(name, " - ", species))
+
+glimpse(string_concatenar)
+
+# ================================================================
+
+# 7. forcats (fatores/categorias)
+
+# fct_relevel() - reordenar níveis manualmente
+# fct_infreq() - ordenar por frequência
+# fct_recode() - renomear níveis
+# fct_lump() - agrupar categorias raras em "outros"
+
+# Exemplo de criação de data frame:
+
+# Reordenar níveis manualmente.
+
+library(forcats)
+library(dplyr)
+
+# Reordena manualmente os níveis de um fator, colocando os níveis 
+# em uma posição específica (geralmente no início).
+
+# fct_relevel() é útil quando você quer controlar a ordem dos níveis 
+# para gráficos (ggplot2) ou tabelas, por exemplo, colocando uma 
+# categoria como “padrão” ou “referência”.
+
+# Criando um vetor categórico (fator).
+cores <- factor(c("Azul", "Vermelho", "Verde", "Azul", "Verde", "Amarelo"))
+
+# Visualizando a ordem original dos níveis.
+levels(cores)
+
+# Reordenando os níveis manualmente.
+cores_reordenadas <- fct_relevel(cores, "Vermelho")
+
+levels(cores_reordenadas)
+
+# ----------
+
+# Criando um fator com diferentes frequências.
+frutas <- factor(c(
+  "Maçã", "Banana", "Maçã", "Uva", "Maçã", "Banana", "Uva", "Uva", "Uva")
+  )
+
+# Contando as frequências antes.
+table(frutas)
+
+frutas_ordem_freq <- fct_infreq(frutas)
+
+# Agora os níveis estão ordenados pela frequência, garantindo que as 
+# categorias mais comuns apareçam primeiro.
+
+levels(frutas_ordem_freq)
+
+# ----------
+
+# Renomeia os níveis de um fator — ou seja, altera os rótulos 
+# de categorias específicas.
+
+# Criando fator com nomes confusos.
+status <- factor(c("Aprov", "Reprov", "Aprov", "Em_Analise", "Reprov"))
+
+# Renomeando para nomes mais legíveis.
+status_limpo <- fct_recode(status,
+                           "Aprovado" = "Aprov",
+                           "Reprovado" = "Reprov",
+                           "Em Análise" = "Em_Analise")
+
+# fct_recode() é excelente para padronizar categorias vindas de 
+# bancos de dados onde há abreviações, erros de digitação 
+# ou nomes pouco legíveis.
+
+levels(status_limpo)
+
+# ----------
+
+# Agrupa as categorias menos frequentes em uma 
+#categoria “outros” (por padrão, "Other").
+# Ideal para simplificar gráficos ou análises quando há muitas categorias raras.
+
+# Criando um fator com várias categorias.
+animais <- factor(c("Cachorro", "Gato", "Gato", "Peixe", "Pássaro", 
+                    "Cavalo", "Gato", "Cachorro", "Tartaruga", "Pássaro"))
+
+# Contando frequências antes.
+table(animais)
+
+animais_lumped <- fct_lump(animais, n = 2)
+
+# As categorias menos frequentes foram agrupadas em "Other".
+# Isso é especialmente útil para gráficos de pizza ou barras, 
+# evitando que apareçam dezenas de rótulos pequenos e irrelevantes.
+
+table(animais_lumped)
+
+# ================================================================
+
+# 8. ggplot2 (visualização)
+
+# ggplot() - inicializa gráfico
+# geom_point() - gráfico de dispersão
+# geom_line() - linha
+# geom_col() / geom_bar() - barras
+# geom_histogram() - histograma
+# geom_boxplot() - boxplot
+# facet_wrap() / facet_grid() - dividir gráfico em painéis
+# labs() - títulos e eixos
+# theme_minimal(), theme_classic() - temas
+
+# Exemplo de visualizações.
+
+library(ggplot2)
+
+# geom_point() — gráfico de dispersão.
+# Base: altura cm vs peso kg.
+# geom_point() adiciona os pontos (scatter plot).
+# color define a cor dos pontos.
+# size define o tamanho.
+ggplot(dados, aes(x = height, y = mass)) +
+  geom_point(color = "steelblue", size = 3)
+
+# ----------
+
+# geom_line() — gráfico de linha
+# geom_line() liga os pontos por uma linha.
+# Requer uma variável contínua no eixo x.
+# Ideal para séries temporais ou tendências.
+ggplot(dados, aes(x = mass, y = sex)) +
+  geom_line(color = "darkorange", linewidth = 1)
+
+# ----------
+
+# geom_col() / geom_bar() — gráfico de barras.
+# geom_col() → usa valores já fornecidos em y.
+ggplot(dados, aes(x = as.factor(mass), y = height)) +
+  geom_col(fill = "seagreen")
+
+# ----------
+
+# geom_col() / geom_bar() — gráfico de barras.
+# geom_bar() → conta automaticamente as ocorrências (não precisa de height).
+ggplot(dados, aes(x = as.factor(mass))) +
+  geom_bar(fill = "purple")
+
+# ----------
+
+# geom_histogram() — histograma.
+# Agrupa valores numéricos em intervalos (bins).
+# binwidth → tamanho das classes.
+# Mostra distribuição de frequência.
+ggplot(dados, aes(x = height)) +
+  geom_histogram(binwidth = 3, fill = "skyblue", color = "black")
+
+# ----------
+
+# geom_boxplot() — boxplot
+# Mostra mediana, quartis e outliers.
+# Ideal para comparar distribuições entre grupos.
+ggplot(dados, aes(x = as.factor(gender), y = height)) +
+  geom_boxplot(fill = "gold")
+
+# ----------
+
+# facet_wrap() / facet_grid().
+# facet_wrap: divide por uma variável.
+ggplot(dados, aes(x = mass, y = gender)) +
+  geom_point(color = "tomato") +
+  facet_wrap(~mass)
+
+# ----------
+
+# labs() — títulos, legendas e eixos.
+ggplot(dados, aes(x = mass, y = height)) +
+  geom_point() +
+  labs(
+    title = "Relação entre peso e altura",
+    subtitle = "Base de dados starswars",
+    x = "peso (kg)",
+    y = "Altura (cm)",
+    caption = "Fonte: dataset starswars"
+  )
+
+# ----------
+
+# theme_minimal() — aparência.
+# theme_gray() (padrão)
+# theme_light()
+# theme_dark()
+# theme_bw()
+ggplot(dados, aes(x = mass, y = height)) +
+  geom_point(color = "darkgreen") +
+  theme_minimal()
+
+# ----------
+
+# theme_classic() — aparência.
+# theme_gray() (padrão)
+# theme_light()
+# theme_dark()
+# theme_bw()
+ggplot(dados, aes(x = height, y = mass)) +
+  geom_point(color = "darkred") +
+  theme_classic()
+
 
 
