@@ -1,4 +1,4 @@
-# Explorando o ecossistema tidyverse no R.
+# Explorando o ecossistema tidyverse da linguagem R.
 
 # O que é o tidyverse?
 # O tidyverse é um ecossistema de pacotes no R criado para facilitar 
@@ -7,7 +7,7 @@
 
 # Cada variável é uma coluna,
 # Cada observação é uma linha,
-# Cada valor é uma célula.
+# Cada valor é uma célula. 
 
 # Essa padronização torna os dados mais fáceis de manipular, analisar 
 # e visualizar.
@@ -21,13 +21,13 @@
 # Comunicar resultados.
 
 # Caso ainda não o tenha instalado:
-# install.packages("tidyverse").
+# install.packages("tidyverse")
 
 # Após instalado, a próxima linha carrega toda a coleção:
 
 library(tidyverse)
 
-# são carregados:
+# São carregados:
 # ggplot2 → visualização de dados.
 # dplyr → manipulação de dados.
 # tidyr → organização de dados.
@@ -48,14 +48,6 @@ library(tidyverse)
 # write_csv() - salvar CSV.
 # read_rds() e write_rds() - salvar/ler binário.
 
-# Exemplo de leitura de arquivo csv:
-
-# Variável do arquivo csv a ser explorado.
-arquivo <- "exemplo.csv"
-
-# Variável que conterá o data frame.
-dados <- read_csv(file = arquivo)
-
 # ================================================================
 
 # 2. dplyr (manipulação de dados).
@@ -72,7 +64,7 @@ dados <- read_csv(file = arquivo)
 
 # Exemplo de manipulação de dados:
 
-# Exemplo com dataset interno
+# Exemplo com dataset interno.
 dados = starwars
 
 # Leitura das primeiras linhas.
@@ -83,29 +75,28 @@ View(dados)
 
 # ----------
 
+# filtra apenas as linhas do tipo olhos azuis. 
+# Seleciona nome, cor dos olhos, peso e altura.
+# Ordenação descendente dos nomes.
+# Cria uma coluna altura_peso para o imc.
+# Renomeia a coluna altura_peso para imc.
 dados %>% 
-  # filtra apenas as linhas do tipo olhos azuis. 
   filter(eye_color == "blue") %>%   
-  # Seleciona nome, cor dos olhos, peso e altura.
   select(name, eye_color, mass, height) %>%
-  # Ordenação descendente dos nomes.
   arrange(desc(name)) %>%
-  # Cria uma coluna altura_peso para o imc.
   mutate(altura_peso = mass / ((height / 100) ** 2 )) %>%
-  # Renomeia a coluna altura_peso para imc.
   rename(imc = altura_peso)
-  # Valores únicos.
 
 # ----------
 
+# Busca o valor mais frequente.
 dados %>%
-  # Busca o valor mais frequente.
   summarise(moda = names(which.max(table(sex))))
 
 # ----------
 
+# Valores distintos.
 dados %>%
-  # Valores distintos.
   distinct(sex)
 
 # ----------
@@ -158,12 +149,16 @@ full_join(alunos, turmas, by = "id")
 # Transformar as colunas height, mass e birth_year em duas colunas:
 # atributo e valor.
 
+# Seleciona colunas relevantes.
+# Colunas que serão transformadas.
+# Nome da nova coluna com os nomes originais.
+# Nome da nova coluna com os valores.
 dados_longos <- dados %>%
-  select(name, height, mass, birth_year) %>%  # seleciona colunas relevantes
+  select(name, height, mass, birth_year) %>%  
   pivot_longer(
-    cols = c(height, mass, birth_year),       # colunas que serão transformadas
-    names_to = "atributo",                    # nome da nova coluna com os nomes originais
-    values_to = "valor"                       # nome da nova coluna com os valores
+    cols = c(height, mass, birth_year),       
+    names_to = "atributo",                    
+    values_to = "valor"                       
   )
 
 head(dados_longos)
@@ -191,7 +186,7 @@ dados_separados
 # ----------
 
 # Unir duas colunas.
-dados_unidos <- separados %>%
+dados_unidos <- dados_separados %>%
   unite(col = "name", primeiro_nome, segundo_nome, sep = " ")
 
 dados_unidos
